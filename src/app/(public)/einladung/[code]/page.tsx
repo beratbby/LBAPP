@@ -15,7 +15,8 @@ export default async function InvitePage({ params }: PageProps<"/einladung/[code
   if (await getCurrentMember()) redirect("/");
   const invite = await queryOne<{ inviter: string | null }>(
     `SELECT m.display_name AS inviter FROM invites i LEFT JOIN members m ON m.id = i.created_by
-      WHERE i.code = $1 AND i.used_by IS NULL`,
+      WHERE i.code = $1
+        AND (i.max_uses IS NULL OR i.max_uses > (SELECT COUNT(*) FROM members u WHERE u.invite_code = i.code))`,
     [code],
   );
   if (!invite) {
@@ -23,7 +24,7 @@ export default async function InvitePage({ params }: PageProps<"/einladung/[code
       <div className="card text-center">
         <p className="text-4xl">🥀</p>
         <h2 className="mt-2 font-black tracking-tight text-2xl text-rose-dark">Einladung abgelaufen</h2>
-        <p className="mt-1 text-sm text-wine-soft">Dieser Link ist ungültig oder wurde schon benutzt. Frag nach einem neuen.</p>
+        <p className="mt-1 text-sm text-wine-soft">Dieser Link ist ungültig, gelöscht oder schon voll. Frag nach einem neuen.</p>
         <Link href="/login" className="btn btn-ghost mt-4">Zum Login</Link>
       </div>
     );

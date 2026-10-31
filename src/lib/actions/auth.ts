@@ -74,23 +74,29 @@ export async function registerWithInvite(_prev: FormState, formData: FormData): 
   const passwordHash = await hashPassword(password);
   try {
     const result = await transaction(async (client) => {
-      const invite = await queryOne<{ code: string }>(
-        "SELECT code FROM invites WHERE code = $1 AND used_by IS NULL FOR UPDATE",
+      // FOR UPDATE sperrt die Einladung, damit das Limit auch bei gleichzeitigen Anmeldungen hält.
+      const invite = await queryOne<{ max_uses: number | null }>(
+        "SELECT max_uses FROM invites WHERE code = $1 FOR UPDATE",
         [code],
         client,
       );
       if (!invite) return "invalid" as const;
-      const row = await queryOne<{ id: number }>(
-        `INSERT INTO members (username, display_name, password_hash, avatar_emoji)
-         VALUES ($1, $2, $3, $4) RETURNING id`,
-        [username, displayName, passwordHash, emoji],
+      const used = await queryOne<{ n: number }>(
+        "SELECT COUNT(*)::int AS n FROM members WHERE invite_code = $1",
+        [code],
         client,
       );
-      await client.query("UPDATE invites SET used_by = $1, used_at = now() WHERE code = $2", [row!.id, code]);
+      if (invite.max_uses !== null && (used?.n ?? 0) >= invite.max_uses) return "invalid" as const;
+      const row = await queryOne<{ id: number }>(
+        `INSERT INTO members (username, display_name, password_hash, avatar_emoji, invite_code)
+         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+        [username, displayName, passwordHash, emoji, code],
+        client,
+      );
       await createSession(row!.id, client);
       return "ok" as const;
     });
-    if (result === "invalid") return { error: "Diese Einladung ist ungültig oder wurde schon benutzt." };
+    if (result === "invalid") return { error: "Diese Einladung ist ungültig oder schon voll." };
   } catch (err) {
     if (isUniqueViolation(err)) return { error: "Der Benutzername ist schon vergeben." };
     throw err;

@@ -50,8 +50,12 @@ export default async function AdminPage() {
     query<AdminMember>(
       "SELECT id, username, display_name, avatar_emoji, avatar_media_id, is_admin, active FROM members ORDER BY active DESC, display_name",
     ),
-    query<{ code: string; created_at: Date }>(
-      "SELECT code, created_at FROM invites WHERE used_by IS NULL ORDER BY created_at DESC",
+    query<{ code: string; created_at: Date; max_uses: number | null; used: number; names: string[] }>(
+      `SELECT i.code, i.created_at, i.max_uses,
+              COUNT(m.id)::int AS used,
+              COALESCE(array_agg(m.display_name ORDER BY m.created_at) FILTER (WHERE m.id IS NOT NULL), '{}') AS names
+         FROM invites i LEFT JOIN members m ON m.invite_code = i.code
+        GROUP BY i.code ORDER BY i.created_at DESC`,
     ),
     getRules(true),
     getTiers(),
@@ -80,23 +84,41 @@ export default async function AdminPage() {
       {/* Einladungen */}
       <section id="einladungen" className="card scroll-mt-20 space-y-3">
         <h2 className="text-xl font-black">💌 Einladungen</h2>
-        <p className="text-sm text-wine-soft">Jeder Link funktioniert genau einmal. Schick ihn per WhatsApp an einen der Jungs.</p>
-        <form action={createInvite}>
-          <SubmitButton pendingText="Erstellt…">Neuen Einladungslink erstellen</SubmitButton>
-        </form>
+        <p className="text-sm text-wine-soft">
+          Ein Link kann von mehreren benutzt werden, z. B. in eurer WhatsApp-Gruppe. Ist das Limit erreicht oder der Link gelöscht, kommt darüber niemand mehr rein.
+        </p>
+        <ActionForm action={createInvite} className="flex flex-wrap items-end gap-2">
+          <div>
+            <label className="label" htmlFor="max_uses">Max. Anmeldungen</label>
+            <input id="max_uses" name="max_uses" type="number" min={0} max={100} defaultValue={10} className="input w-28" />
+          </div>
+          <SubmitButton pendingText="Erstellt…">Einladungslink erstellen</SubmitButton>
+          <p className="w-full text-xs text-wine-soft">0 = unbegrenzt</p>
+        </ActionForm>
         {invites.length > 0 && (
           <ul className="space-y-2">
             {invites.map((inv) => {
               const url = `${origin}/einladung/${inv.code}`;
-              const wa = `https://wa.me/?text=${encodeURIComponent(`Du wurdest zu den LoverBoys eingeladen 💘 ${url}`)}`;
+              const wa = `https://wa.me/?text=${encodeURIComponent(`Ihr wurdet zu den LoverBoys eingeladen 💘 ${url}`)}`;
+              const full = inv.max_uses !== null && inv.used >= inv.max_uses;
               return (
-                <li key={inv.code} className="rounded-2xl bg-blush/40 p-3">
-                  <p className="font-mono text-xs break-all">{url}</p>
+                <li key={inv.code} className={`rounded-2xl bg-blush/40 p-3 ${full ? "opacity-60" : ""}`}>
+                  <div className="flex items-center gap-2">
+                    <p className="flex-1 font-mono text-xs break-all">{url}</p>
+                    <span className="chip shrink-0">
+                      {full ? "voll" : `${inv.used}/${inv.max_uses ?? "∞"} benutzt`}
+                    </span>
+                  </div>
+                  {inv.names.length > 0 && (
+                    <p className="mt-1 text-xs text-wine-soft">Angemeldet: {inv.names.join(", ")}</p>
+                  )}
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <CopyButton text={url} label="Link kopieren" />
-                    <a href={wa} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">WhatsApp</a>
+                    {!full && <CopyButton text={url} label="Link kopieren" />}
+                    {!full && <a href={wa} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">WhatsApp</a>}
                     <form action={deleteInvite.bind(null, inv.code)}>
-                      <SubmitButton className="btn btn-danger btn-sm">Löschen</SubmitButton>
+                      <SubmitButton className="btn btn-danger btn-sm" confirm="Link löschen? Wer schon drin ist, bleibt Mitglied.">
+                        Löschen
+                      </SubmitButton>
                     </form>
                     <span className="text-xs text-wine-soft">erstellt <TimeAgo date={inv.created_at} /></span>
                   </div>

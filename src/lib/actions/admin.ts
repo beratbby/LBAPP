@@ -56,16 +56,21 @@ export async function resetPassword(_prev: FormState, fd: FormData): Promise<For
 
 // ---------- Einladungen ----------
 
-export async function createInvite(): Promise<void> {
+export async function createInvite(_prev: FormState, fd: FormData): Promise<FormState> {
   const me = await requireAdmin();
+  const raw = String(fd.get("max_uses") ?? "").trim();
+  const maxUses = raw === "" || raw === "0" ? null : Number.parseInt(raw, 10);
+  if (maxUses !== null && !(maxUses >= 1 && maxUses <= 100)) return { error: "Limit: 1 bis 100, oder leer für unbegrenzt." };
   const code = randomBytes(6).toString("base64url").replace(/[-_]/g, "x");
-  await query("INSERT INTO invites (code, created_by) VALUES ($1, $2)", [code, me.id]);
+  await query("INSERT INTO invites (code, created_by, max_uses) VALUES ($1, $2, $3)", [code, me.id, maxUses]);
   refreshAll();
+  return { ok: "Einladungslink erstellt." };
 }
 
+/** Löscht den Link. Wer sich schon darüber angemeldet hat, bleibt Mitglied. */
 export async function deleteInvite(code: string): Promise<void> {
   await requireAdmin();
-  await query("DELETE FROM invites WHERE code = $1 AND used_by IS NULL", [code]);
+  await query("DELETE FROM invites WHERE code = $1", [code]);
   refreshAll();
 }
 

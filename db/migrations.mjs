@@ -159,4 +159,18 @@ export const migrations = [
       ) AS p(threshold, title, description) ON p.threshold = t.threshold;
     `,
   },
+  {
+    id: 2,
+    name: "mehrfach-einladungen",
+    sql: `
+      -- Einladungslinks können jetzt von mehreren Leuten benutzt werden.
+      -- max_uses NULL = unbegrenzt.
+      ALTER TABLE invites ADD COLUMN max_uses INT CHECK (max_uses IS NULL OR max_uses > 0);
+      ALTER TABLE members ADD COLUMN invite_code TEXT REFERENCES invites(code) ON DELETE SET NULL;
+
+      -- Bisherige Einladungen waren Einmal-Links.
+      UPDATE invites SET max_uses = 1;
+      UPDATE members m SET invite_code = i.code FROM invites i WHERE i.used_by = m.id;
+    `,
+  },
 ];
