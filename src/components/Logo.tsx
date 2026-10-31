@@ -49,7 +49,7 @@ export function LogoMark({ size = 48, className = "" }: { size?: number; classNa
 export function Wordmark({ className = "" }: { className?: string }) {
   return (
     <span
-      className={`bg-linear-to-r from-rose-dark via-rose to-pink-500 bg-clip-text font-script text-transparent ${className}`}
+      className={`bg-linear-to-r from-rose-dark via-rose to-pink-500 bg-clip-text font-black tracking-tight text-transparent ${className}`}
     >
       LoverBoy
     </span>

@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Nunito, Pacifico } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 
 const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"] });
-const pacifico = Pacifico({ variable: "--font-pacifico", weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: { default: "LoverBoy", template: "%s · LoverBoy" },
@@ -20,7 +19,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="de" className={`${nunito.variable} ${pacifico.variable} h-full antialiased`}>
+    <html lang="de" className={`${nunito.variable} h-full antialiased`}>
       <body className="min-h-full font-sans">{children}</body>
     </html>
   );

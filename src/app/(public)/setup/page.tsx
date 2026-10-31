@@ -13,7 +13,7 @@ export default async function SetupPage() {
   if ((await memberCount()) > 0) redirect("/login");
   return (
     <div className="card">
-      <h2 className="font-script text-2xl text-rose-dark">Willkommen, Gründervater</h2>
+      <h2 className="font-black tracking-tight text-2xl text-rose-dark">Willkommen, Gründervater</h2>
       <p className="mt-1 mb-4 text-sm text-wine-soft">
         Die App ist noch leer. Der erste Account wird <b>Admin</b> und kann danach die anderen LoverBoys einladen.
       </p>

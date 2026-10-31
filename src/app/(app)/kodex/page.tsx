@@ -22,7 +22,7 @@ export default async function KodexPage() {
       <ol className="space-y-3">
         {rules.map((r, i) => (
           <li key={r.id} className="card flex gap-4">
-            <span className="font-script text-3xl text-petal">{i + 1}.</span>
+            <span className="font-black tracking-tight text-3xl text-petal">{i + 1}.</span>
             <div className="flex-1">
               <p className="font-extrabold">{r.emoji} {r.title}</p>
               <p className="text-sm text-wine-soft">{r.description}</p>

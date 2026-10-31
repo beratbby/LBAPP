@@ -26,7 +26,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       {sp.willkommen && (
         <div className="card border-rose bg-blush/60 text-center">
           <p className="text-3xl">🌹</p>
-          <p className="font-script text-2xl text-rose-dark">Willkommen bei den LoverBoys!</p>
+          <p className="font-black tracking-tight text-2xl text-rose-dark">Willkommen bei den LoverBoys!</p>
           <p className="text-sm">Lies den <Link href="/kodex" className="font-bold underline">Kodex</Link>. Unwissenheit schützt vor Strafe nicht.</p>
         </div>
       )}
@@ -41,7 +41,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         <Avatar member={me} size="lg" />
         <div className="min-w-0 flex-1">
           <p className="text-sm text-wine-soft">Hey {me.display_name}, du bist aktuell</p>
-          <p className="font-script text-2xl text-rose-dark">{myTitle.emoji} {myTitle.title}</p>
+          <p className="font-black tracking-tight text-2xl text-rose-dark">{myTitle.emoji} {myTitle.title}</p>
           <p className="text-sm">
             <b className="text-2xl text-rose">{myPoints}</b> Strafpunkte
             {nextTier && <span className="text-wine-soft"> · noch {nextTier.threshold - myPoints} bis {nextTier.emoji} {nextTier.name}</span>}

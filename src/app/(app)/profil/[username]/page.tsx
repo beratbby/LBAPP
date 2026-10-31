@@ -41,7 +41,7 @@ export default async function ProfilePage({ params }: PageProps<"/profil/[userna
         <div className="flex justify-center"><Avatar member={member} size="xl" /></div>
         <h1 className="mt-3 text-3xl font-black">{member.display_name}</h1>
         <p className="text-sm text-wine-soft">@{member.username}{member.is_admin && " · 👑 Admin"}{!member.active && " · deaktiviert"}</p>
-        <p className="mt-2 font-script text-2xl text-rose-dark">{t.emoji} {t.title}</p>
+        <p className="mt-2 font-black tracking-tight text-2xl text-rose-dark">{t.emoji} {t.title}</p>
         {member.bio && <p className="mt-2 text-sm italic">&ldquo;{member.bio}&rdquo;</p>}
         <div className="mt-4 grid grid-cols-3 gap-2">
           <Stat label="Strafpunkte" value={points} />

@@ -11,7 +11,6 @@
   --color-wine-soft: #7a4256;
   --color-gold: #f59e0b;
   --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
-  --font-script: var(--font-pacifico), cursive;
 }
 
 :root {
@@ -53,7 +52,7 @@ body {
     @apply mb-1 block text-sm font-bold text-wine-soft;
   }
   .page-title {
-    @apply font-script text-3xl text-rose-dark;
+    @apply text-3xl font-black tracking-tight text-rose-dark;
   }
   .chip {
     @apply inline-flex items-center gap-1 rounded-full bg-blush px-2.5 py-0.5 text-xs font-bold text-rose-dark;

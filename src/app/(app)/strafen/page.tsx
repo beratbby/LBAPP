@@ -57,7 +57,7 @@ export default async function PunishmentsPage() {
             ) : (
               <div className="space-y-3">
                 <div className="rounded-2xl bg-blush/60 p-4 text-center">
-                  <p className="font-script text-2xl text-rose-dark">{ap.punishment_title}</p>
+                  <p className="font-black tracking-tight text-2xl text-rose-dark">{ap.punishment_title}</p>
                   <p className="text-sm">{ap.punishment_description}</p>
                   {ap.spun_at && <p className="mt-1 text-xs text-wine-soft">gedreht <TimeAgo date={ap.spun_at} /></p>}
                 </div>

@@ -22,7 +22,7 @@ export default async function InvitePage({ params }: PageProps<"/einladung/[code
     return (
       <div className="card text-center">
         <p className="text-4xl">🥀</p>
-        <h2 className="mt-2 font-script text-2xl text-rose-dark">Einladung abgelaufen</h2>
+        <h2 className="mt-2 font-black tracking-tight text-2xl text-rose-dark">Einladung abgelaufen</h2>
         <p className="mt-1 text-sm text-wine-soft">Dieser Link ist ungültig oder wurde schon benutzt. Frag nach einem neuen.</p>
         <Link href="/login" className="btn btn-ghost mt-4">Zum Login</Link>
       </div>
@@ -30,7 +30,7 @@ export default async function InvitePage({ params }: PageProps<"/einladung/[code
   }
   return (
     <div className="card">
-      <h2 className="font-script text-2xl text-rose-dark">Du wurdest erwählt 💌</h2>
+      <h2 className="font-black tracking-tight text-2xl text-rose-dark">Du wurdest erwählt 💌</h2>
       <p className="mt-1 mb-4 text-sm text-wine-soft">
         {invite.inviter ?? "Die Jungs"} lädt dich zu den LoverBoys ein. Mit der Anmeldung akzeptierst du den Kodex und alle Konsequenzen.
       </p>

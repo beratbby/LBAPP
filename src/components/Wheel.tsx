@@ -150,7 +150,7 @@ export function Wheel({
           </div>
           <div className="rounded-3xl border-2 border-rose bg-blush/70 p-4 text-center">
             <p className="text-xs font-bold tracking-widest text-rose-dark uppercase">Das Schicksal hat entschieden</p>
-            <p className="mt-1 font-script text-2xl text-rose-dark">{result.title}</p>
+            <p className="mt-1 font-black tracking-tight text-2xl text-rose-dark">{result.title}</p>
             <p className="mt-1 text-sm">{result.description}</p>
             <button
               type="button"
