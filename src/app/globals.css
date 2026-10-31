@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* Romantisch-ironische Farbwelt: Valentinskarte trifft Strafregister. */
+@theme inline {
+  --color-cream: #fff6f1;
+  --color-blush: #ffe4ec;
+  --color-petal: #ffc9d9;
+  --color-rose: #e11d48;
+  --color-rose-dark: #9f1239;
+  --color-wine: #3b1020;
+  --color-wine-soft: #7a4256;
+  --color-gold: #f59e0b;
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-pacifico), cursive;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(255, 201, 217, 0.55), transparent 40%),
+    radial-gradient(circle at 100% 30%, rgba(255, 228, 236, 0.8), transparent 35%);
+  background-attachment: fixed;
+  color: var(--color-wine);
+}
+
+@layer components {
+  .card {
+    @apply rounded-3xl border border-petal/70 bg-white/85 p-5 shadow-[0_8px_30px_-12px_rgba(159,18,57,0.25)] backdrop-blur;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply bg-linear-to-r from-rose to-pink-500 text-white shadow-md shadow-rose/30 hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply border border-petal bg-white text-rose-dark hover:bg-blush;
+  }
+  .btn-danger {
+    @apply border border-red-200 bg-red-50 text-red-700 hover:bg-red-100;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .input {
+    @apply w-full rounded-2xl border border-petal bg-white px-4 py-2.5 text-wine placeholder:text-wine-soft/50 focus:border-rose focus:ring-2 focus:ring-rose/20 focus:outline-none;
+  }
+  .label {
+    @apply mb-1 block text-sm font-bold text-wine-soft;
+  }
+  .page-title {
+    @apply font-script text-3xl text-rose-dark;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full bg-blush px-2.5 py-0.5 text-xs font-bold text-rose-dark;
+  }
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateY(-260px) scale(1.2) rotate(20deg); opacity: 0; }
+}
+.heart-burst span {
+  position: absolute;
+  bottom: 0;
+  animation: float-up 2.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+.wobble {
+  animation: wobble 2.4s ease-in-out infinite;
+}
