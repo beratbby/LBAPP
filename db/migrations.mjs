@@ -173,4 +173,13 @@ export const migrations = [
       UPDATE members m SET invite_code = i.code FROM invites i WHERE i.used_by = m.id;
     `,
   },
+  {
+    id: 3,
+    name: "stufe-3-umbenennen",
+    sql: `
+      -- Mehr Punkte = weniger LoverBoy. Nur umbenennen, wenn der Admin den Namen nicht geändert hat.
+      UPDATE tiers SET name = 'LoverBoy-Lizenz entzogen', emoji = '🚫'
+       WHERE name = 'Hoffnungsloser Romantiker' AND emoji = '🥀';
+    `,
+  },
 ];

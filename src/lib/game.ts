@@ -3,13 +3,14 @@ import { query, queryOne, type Db } from "./db";
 
 // ---------- Titel nach Punktestand ----------
 
+// Je mehr Strafpunkte, desto weniger LoverBoy.
 const TITLES: { min: number; title: string; emoji: string }[] = [
-  { min: 15, title: "Casanova a.D.", emoji: "🌹" },
-  { min: 10, title: "Herzensbrecher", emoji: "💔" },
-  { min: 5, title: "Hoffnungsloser Romantiker", emoji: "🥀" },
-  { min: 3, title: "Wackelkandidat", emoji: "🫣" },
-  { min: 1, title: "Kleiner Flirt", emoji: "😏" },
-  { min: 0, title: "Unschuldsengel", emoji: "😇" },
+  { min: 15, title: "Ex-LoverBoy", emoji: "🚫" },
+  { min: 10, title: "Gefallener LoverBoy", emoji: "🥀" },
+  { min: 5, title: "LoverBoy auf Bewährung", emoji: "💔" },
+  { min: 3, title: "Wackel-LoverBoy", emoji: "🫣" },
+  { min: 1, title: "LoverBoy mit Kratzer", emoji: "🩹" },
+  { min: 0, title: "Ehren-LoverBoy", emoji: "👑" },
 ];
 
 export function titleFor(points: number) {

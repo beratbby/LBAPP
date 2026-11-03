@@ -78,7 +78,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       <section className="card">
         <div className="mb-3 flex items-baseline justify-between">
           <h2 className="page-title">Hall of Shame</h2>
-          <span className="text-xs text-wine-soft">Platz 1 = größter LoverBoy</span>
+          <span className="text-xs text-wine-soft">Platz 1 = am wenigsten LoverBoy</span>
         </div>
         <ol className="divide-y divide-petal/50">
           {board.map((row, i) => {
